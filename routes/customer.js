@@ -1,11 +1,12 @@
 const express = require("express");
-const {handleCreateCustomer,handleUpdateCustomer,handleDeleteCustomer} = require("../controller/customer");
+const {handleCreateCustomer,handleDeleteCustomer,handleUpdateCustomerVehicle,handleUpdateCustomer} = require("../controller/customer");
 const router = express.Router();
 
 
-router.post("/",handleCreateCustomer);
+router.post("/create",handleCreateCustomer);
 router.delete("/delete/:id",handleDeleteCustomer);
 router.patch("/update/:id",handleUpdateCustomer);
+router.patch("/updateVehicle/:id",handleUpdateCustomerVehicle);
 
 
 module.exports = router;

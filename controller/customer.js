@@ -6,14 +6,14 @@ async function handleCreateCustomer(req,res){
     const name = (body.name!=null) ? body.name : null;
     const phone = (body.phone!=null) ? body.phone : null;
     const address = (body.address!=null) ? body.address : null;
-    const vehicle = (body.vehicle!=null) ? body.vehicle : null;
+    const vehicle = (body.vehicles!=null) ? body.vehicles : null;
     if(name && phone && address){
         const data = await Customer.create({
             name:name,
             phone:phone,
             address:address,
             vehicles: vehicle ? [{
-                vehicleNumber: vehicle.number,
+                vehicleNumber: vehicle.vehicleNumber,
                 make:vehicle.make,
                 model:vehicle.model,
                 manufacturer:vehicle.manufacturer
@@ -40,24 +40,44 @@ async function handleDeleteCustomer(req,res){
 }
 
 
-// async function handleUpdateCustomer(req,res){
-//     const id = req.params.id;
-//     const body = req.body
-//     const name = (body.name!=null) ? body.name : null;
-//     const phone = (body.phone!=null) ? body.phone : null;
-//     const address = (body.address!=null) ? body.address : null;
-//     const vehicle = (body.vehicle!=null) ? body.vehicle : null;
+async function handleUpdateCustomer(req,res){
+    const id = req.params.id;
+    const body = req.body;
     
-//     const result = await Customer.findOneAndUpdate({
-        
+    const result = await Customer.findByIdAndUpdate(
+        id,
+        { $set: body }, 
+        { new: true, runValidators: true }
+      );
 
-//     });
-//     if(!result) return res.status(404).json({error:"record not found"});
-//     return res.status(200).json({
-//         message:"customer deleted successfully",
-//         data:result
-//     })
-// }
+    if(!result) return res.status(404).json({error:"record not found"});
+    return res.status(200).json({
+        message:"customer updated successfully",
+        data:result
+    })
+}
 
 
-module.exports = {handleCreateCustomer,handleDeleteCustomer}
+async function handleUpdateCustomerVehicle(req,res){
+    const id = req.params.id;
+    const body = req.body;
+    
+    const result = await Customer.findByIdAndUpdate(
+        id,
+        {$push:
+            {vehicles:
+                body
+            }
+        },
+        { new: true, runValidators: true }
+      );
+
+    if(!result) return res.status(404).json({error:"record not found"});
+    return res.status(200).json({
+        message:"customer vehicle updated successfully",
+        data:result
+    })
+}
+
+
+module.exports = {handleCreateCustomer,handleDeleteCustomer,handleUpdateCustomer,handleUpdateCustomerVehicle}
