@@ -35,7 +35,7 @@ const jobCardSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        required:true
+        default:"Pending"
     }
 
 },{timestamps:true})

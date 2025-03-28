@@ -16,6 +16,7 @@ const customerHandler = require("./routes/customer");
 const userHandler = require("./routes/user");
 const { restrictToLoggedInUserOnly,restrictTo } = require('./middleware/auth');
 const loginHandler = require("./routes/login");
+const stockHandler = require("./routes/inventory");
 
 
 
@@ -35,4 +36,5 @@ app.listen(PORT,()=>{
 app.use('/',loginHandler)
 app.use('/customer',restrictToLoggedInUserOnly,restrictTo(["TECHNICIAN"]),customerHandler);
 app.use('/user',restrictToLoggedInUserOnly,restrictTo(["ADMIN","SUPERADMIN"]),userHandler);
+app.use('/inventory',restrictToLoggedInUserOnly,restrictTo(["STOCKMANAGER"]),stockHandler)
 

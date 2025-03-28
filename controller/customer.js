@@ -12,12 +12,7 @@ async function handleCreateCustomer(req,res){
             name:name,
             phone:phone,
             address:address,
-            vehicles: vehicle ? [{
-                vehicleNumber: vehicle.vehicleNumber,
-                make:vehicle.make,
-                model:vehicle.model,
-                manufacturer:vehicle.manufacturer
-            }] :[],
+            vehicles: vehicle ? vehicle : [],
         });
 
         return res.status(200).json({
@@ -61,7 +56,6 @@ async function handleUpdateCustomer(req,res){
 async function handleUpdateCustomerVehicle(req,res){
     const id = req.params.id;
     const body = req.body;
-    
     const result = await Customer.findByIdAndUpdate(
         id,
         {$push:
