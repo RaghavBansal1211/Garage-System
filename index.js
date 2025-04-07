@@ -17,24 +17,19 @@ const userHandler = require("./routes/user");
 const { restrictToLoggedInUserOnly,restrictTo } = require('./middleware/auth');
 const loginHandler = require("./routes/login");
 const stockHandler = require("./routes/inventory");
+const financeHandler = require("./routes/finance");
 
 
-
-// app.use(restrictToLoggedInUserOnly);
-// app.use(restrictTo);
 
 // Database Connection
 connectDB("mongodb://127.0.0.1:27017/Garage");
-
-
-
 
 app.listen(PORT,()=>{
     console.log(`Server is listening at PORT: ${PORT}`);
 })
 
 app.use('/',loginHandler)
-app.use('/customer',restrictToLoggedInUserOnly,restrictTo(["TECHNICIAN"]),customerHandler);
-app.use('/user',restrictToLoggedInUserOnly,restrictTo(["ADMIN","SUPERADMIN"]),userHandler);
-app.use('/inventory',restrictToLoggedInUserOnly,restrictTo(["STOCKMANAGER"]),stockHandler)
-
+app.use('/customer',restrictToLoggedInUserOnly,restrictTo(["TECHNICIAN"]),customerHandler);    //TESTED -> WORKING FINE
+app.use('/user',restrictToLoggedInUserOnly,restrictTo(["ADMIN","SUPERADMIN"]),userHandler);    //TESTED -> WORKING FINE
+app.use('/inventory',restrictToLoggedInUserOnly,restrictTo(["STOCKMANAGER"]),stockHandler);    //TESTED -> WORKING FINE
+app.use('/finance',restrictToLoggedInUserOnly,restrictTo(["FINANCEMANAGER"]),financeHandler);  //TESTED -> WORKING FINE

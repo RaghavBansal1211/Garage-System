@@ -25,8 +25,14 @@ const jobCardSchema = new mongoose.Schema({
     ],
     partsNeeded:[
         {
-            type:String,
-            required:true
+            partName:{
+                type:String,
+                required:true
+            },
+            quantity:{
+                type:Number,
+                required:true
+            }
         }
     ],
     estimatedCost:{

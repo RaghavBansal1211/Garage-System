@@ -15,17 +15,31 @@ const invoiceSchema = new mongoose.Schema({
     },
     partsUsed:[
         {
-            type:String,
-            required:true
+            partName:{
+                type:String,
+                required:true
+            },
+            quantity:{
+                type:Number,
+                required:true
+            }
+            
         }
     ],
     laborCharges:{
         type:Number,
         required:true
     },
-    status:{
-        type:String,
-        required:true
+    Amountstatus:{
+        amountPaid:{
+            type:Number,
+            required:true,
+        },
+        
+        status:{
+            type:String,
+            required:true
+        }
     }
 
 },{timestamps:true})
