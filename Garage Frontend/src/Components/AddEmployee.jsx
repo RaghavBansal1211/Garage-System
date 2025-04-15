@@ -68,6 +68,7 @@ const AddEmployee = () => {
             >
               <option value="">Select Role</option>
               <option value="TECHNICIAN">Technician</option>
+              <option value="HEADTECHNICIAN">Head Technician</option>
               <option value="STOCKMANAGER">Stock Manager</option>
               <option value="FINANCEMANAGER">Finance Manager</option>
             </select>

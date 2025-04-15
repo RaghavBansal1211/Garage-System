@@ -18,6 +18,4 @@ router.post("/createInvoice/:JobCardId",handleCreateInvoice);
 router.get('/Invoices/fetchAll',handleGetAllInvoices);
 router.patch("/updateInvoicePayment/:InvoiceId",handleUpdateInvoiceStatus);
 
-
-
 module.exports = router;

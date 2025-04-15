@@ -133,7 +133,59 @@ async function handleUpdateInvoiceStatus(req, res) {
          });
      }
  }
+
+
+ 
+ const updateInvoiceProductAndPrice = async (req, res) => {
+    try {
+      const InvoiceId = req.params.InvoiceId;
+      const { partsUsed, discount = 0, gst = 18 } = req.body;
+  
+      const invoice = await Invoice.findById(InvoiceId);
+      if (!invoice) {
+        return res.status(404).json({ message: 'Invoice not found' });
+      }
+  
+      let partsCost = 0;
+      const updatedParts = [];
+  
+      for (const part of partsUsed) {
+        const unitPrice = await getPrice(part.partName); // fetch from stock
+        const cost = unitPrice * part.quantity;
+        partsCost += cost;
+  
+        updatedParts.push({
+          partName: part.partName,
+          quantity: part.quantity,
+          unitPrice
+        });
+      }
+  
+      const laborCharges = invoice.laborCharges;
+  
+      const subtotal = partsCost + laborCharges - discount;
+      const gstAmount = (subtotal * gst) / 100;
+      const finalAmount = subtotal + gstAmount;
+  
+      // Update invoice document
+      invoice.partsUsed = updatedParts;
+      invoice.discount = discount;
+      invoice.gst = gst;
+      invoice.finalAmount = parseFloat(finalAmount.toFixed(2));
+  
+      await invoice.save();
+  
+      res.status(200).json({
+        message: 'Invoice updated successfully',
+        data: invoice,
+      });
+  
+    } catch (error) {
+      console.error('Update invoice error:', error.message);
+      res.status(500).json({ message: error.message || 'Internal server error' });
+    }
+  };
  
  
 
-module.exports = {handleCreateInvoice,handleGetAllInvoices,handleUpdateInvoiceStatus};
+module.exports = {handleCreateInvoice,handleGetAllInvoices,handleUpdateInvoiceStatus,updateInvoiceProductAndPrice};

@@ -24,6 +24,7 @@ const loginHandler = require("./routes/login");
 const stockHandler = require("./routes/inventory");
 const financeHandler = require("./routes/finance");
 const reloadHandler = require("./routes/reload");
+const invoiceHandler = require("./routes/invoice.js");
 
 
 
@@ -35,8 +36,9 @@ app.listen(PORT,()=>{
 })
 
 app.use('/',loginHandler)
-app.use('/customer',restrictToLoggedInUserOnly,restrictTo(["TECHNICIAN"]),customerHandler);    //TESTED -> WORKING FINE
+app.use('/customer',restrictToLoggedInUserOnly,restrictTo(["TECHNICIAN","HEADTECHNICIAN"]),customerHandler);    //TESTED -> WORKING FINE
 app.use('/user',restrictToLoggedInUserOnly,restrictTo(["ADMIN","SUPERADMIN"]),userHandler);    //TESTED -> WORKING FINE
 app.use('/inventory',restrictToLoggedInUserOnly,restrictTo(["STOCKMANAGER"]),stockHandler);    //TESTED -> WORKING FINE
 app.use('/finance',restrictToLoggedInUserOnly,restrictTo(["FINANCEMANAGER"]),financeHandler);  //TESTED -> WORKING FINE
-app.use('/reload',restrictToLoggedInUserOnly,restrictTo(["TECHNICIAN","SUPERADMIN","ADMIN","STOCKMANAGER","FINANCEMANAGER"]),reloadHandler);
+app.use('/invoice',restrictToLoggedInUserOnly,restrictTo(["HEADTECHNICIAN"]),invoiceHandler);
+app.use('/reload',restrictToLoggedInUserOnly,restrictTo(["TECHNICIAN","SUPERADMIN","ADMIN","STOCKMANAGER","FINANCEMANAGER","HEADTECHNICIAN"]),reloadHandler);
